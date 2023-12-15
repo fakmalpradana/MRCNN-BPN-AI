@@ -90,7 +90,7 @@ class CustomDataset(utils.Dataset):
         #   'size': 100202
         # }
         # We mostly care about the x and y coordinates of each region
-        annotations1 = json.load(open('D:/MRCNN_python3.8/Maskrcnn_final/Safetyvest_hardhat_segmentation/part_2_tf2/Dataset/train/train.json'))
+        annotations1 = json.load(open('dataset/train'))
         # print(annotations1)
         annotations = list(annotations1.values())  # don't need the dict keys
 
@@ -152,9 +152,8 @@ class CustomDataset(utils.Dataset):
                         dtype=np.uint8)
         for i, p in enumerate(info["polygons"]):
             # Get indexes of pixels inside the polygon and set them to 1
-        	rr, cc = skimage.draw.polygon(p['all_points_y'], p['all_points_x'])
-
-        	mask[rr, cc, i] = 1
+            rr, cc = skimage.draw.polygon(p['all_points_y'], p['all_points_x'])
+            mask[rr, cc, i] = 1
 
         # Return mask, and array of class IDs of each instance. Since we have
         # one class ID only, we return an array of 1s
@@ -173,12 +172,12 @@ def train(model):
     """Train the model."""
     # Training dataset.
     dataset_train = CustomDataset()
-    dataset_train.load_custom("D:/MRCNN_python3.8/Maskrcnn_final/Safetyvest_hardhat_segmentation/part_2_tf2/dataset", "train")
+    dataset_train.load_custom("dataset", "train")
     dataset_train.prepare()
 
     # Validation dataset
     dataset_val = CustomDataset()
-    dataset_val.load_custom("D:/MRCNN_python3.8/Maskrcnn_final/Safetyvest_hardhat_segmentation/part_2_tf2/dataset", "val")
+    dataset_val.load_custom("dataset", "val")
     dataset_val.prepare()
 
     # *** This training schedule is an example. Update to your needs ***
